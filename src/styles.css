@@ -5,6 +5,10 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --color-neon: var(--neon);
+  --color-cyan: var(--cyan);
+  --color-magenta: var(--magenta);
+  --color-void: var(--void);
   --font-display: "Chakra Petch", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
@@ -45,27 +49,31 @@
 
 :root {
   --radius: 0.75rem;
-  --background: oklch(0.14 0.012 160);
+  --background: #080A0F;
   --foreground: oklch(0.96 0.01 150);
-  --card: oklch(0.19 0.015 160);
+  --card: #111622;
   --card-foreground: oklch(0.96 0.01 150);
-  --popover: oklch(0.19 0.015 160);
+  --popover: #111622;
   --popover-foreground: oklch(0.96 0.01 150);
-  --primary: oklch(0.87 0.25 145);
-  --primary-foreground: oklch(0.15 0.03 150);
-  --secondary: oklch(0.24 0.018 160);
+  --primary: #10F587;
+  --primary-foreground: #05070A;
+  --secondary: #161C2B;
   --secondary-foreground: oklch(0.96 0.01 150);
-  --muted: oklch(0.23 0.015 160);
-  --muted-foreground: oklch(0.68 0.02 155);
+  --muted: #161C2B;
+  --muted-foreground: #A3ACBD;
   --accent: oklch(0.28 0.05 150);
   --accent-foreground: oklch(0.92 0.15 145);
   --destructive: oklch(0.65 0.22 25);
   --destructive-foreground: oklch(0.98 0 0);
   --warning: oklch(0.82 0.16 85);
-  --border: oklch(0.3 0.03 155);
-  --input: oklch(0.3 0.03 155);
-  --ring: oklch(0.87 0.25 145);
-  --sidebar: oklch(0.17 0.014 160);
+  --border: #232B3D;
+  --input: #232B3D;
+  --ring: #10F587;
+  --neon: #00FF88;
+  --cyan: #10B981;
+  --magenta: #FF2BD6;
+  --void: #05070A;
+  --sidebar: #0C0F17;
   --glow: 0 0 24px -4px color-mix(in oklab, var(--primary) 70%, transparent);
   --gradient-hero: radial-gradient(120% 80% at 50% 0%, color-mix(in oklab, var(--primary) 22%, transparent), transparent 60%);
 }
