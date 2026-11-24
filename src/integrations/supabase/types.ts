@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      deposits: {
+        Row: {
+          amount: number
+          created_at: string
+          email: string
+          id: string
+          image_path: string
+          nickname: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          email: string
+          id?: string
+          image_path: string
+          nickname: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          email?: string
+          id?: string
+          image_path?: string
+          nickname?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       matches: {
         Row: {
           created_at: string
@@ -183,6 +216,10 @@ export type Database = {
       accept_match: { Args: { _match_id: string }; Returns: undefined }
       admin_approve_proof: { Args: { _proof_id: string }; Returns: undefined }
       admin_reject_proof: { Args: { _proof_id: string }; Returns: undefined }
+      admin_resolve_deposit: {
+        Args: { _approve: boolean; _id: string }
+        Returns: undefined
+      }
       admin_resolve_withdraw: {
         Args: { _approve: boolean; _id: string }
         Returns: undefined
@@ -194,6 +231,10 @@ export type Database = {
       }
       deposit: { Args: { _amount: number }; Returns: undefined }
       is_admin: { Args: never; Returns: boolean }
+      request_deposit: {
+        Args: { _amount: number; _path: string }
+        Returns: undefined
+      }
       request_withdraw: {
         Args: { _amount: number; _pix_key: string }
         Returns: undefined

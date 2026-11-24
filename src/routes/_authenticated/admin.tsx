@@ -36,6 +36,17 @@ function Admin() {
     },
   });
 
+  const { data: deps = [] } = useQuery({
+    queryKey: ["admin", "deposits"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("deposits").select("*").eq("status", "pending").order("created_at");
+      if (error) throw error;
+      const signed = data.length ? (await supabase.storage.from("proofs").createSignedUrls(data.map((d) => d.image_path), 3600)).data ?? [] : [];
+      return data.map((d, i) => ({ ...d, url: signed[i]?.signedUrl }));
+    },
+    refetchInterval: 10000,
+  });
+
   const run = useMutation({
     mutationFn: async (fn: () => PromiseLike<{ error: unknown }>) => { const { error } = await fn(); if (error) throw error; },
     onSuccess: () => { toast.success("Feito!"); qc.invalidateQueries(); },
@@ -47,11 +58,29 @@ function Admin() {
   return (
     <div className="space-y-4 px-4 pt-4">
       <h1 className="text-2xl font-bold">Painel <span className="text-primary">Admin</span></h1>
-      <Tabs defaultValue="prints">
-        <TabsList className="grid w-full grid-cols-2">
+      <Tabs defaultValue="depositos">
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="depositos">Depósitos ({deps.length})</TabsTrigger>
           <TabsTrigger value="prints">Prints ({proofs.length})</TabsTrigger>
           <TabsTrigger value="saques">Saques ({pendingWds.length})</TabsTrigger>
         </TabsList>
+        <TabsContent value="depositos" className="space-y-3 pt-3">
+          {deps.length === 0 && <p className="text-sm text-muted-foreground">Nenhum depósito pendente.</p>}
+          {deps.map((d) => (
+            <div key={d.id} className="space-y-2 rounded-2xl border bg-card p-4">
+              <div className="flex justify-between gap-2">
+                <span className="break-all text-sm">{d.email}</span>
+                <span className="font-display text-primary">{brl(d.amount)}</span>
+              </div>
+              <p className="text-xs text-muted-foreground">@{d.nickname} • {new Date(d.created_at).toLocaleString("pt-BR")}</p>
+              {d.url && <a href={d.url} target="_blank" rel="noreferrer" className="block text-sm text-primary underline">Ver comprovante</a>}
+              <div className="grid grid-cols-2 gap-2">
+                <Button variant="outline" disabled={run.isPending} onClick={() => run.mutate(() => supabase.rpc("admin_resolve_deposit", { _id: d.id, _approve: false }))}>Rejeitar</Button>
+                <Button variant="neon" disabled={run.isPending} onClick={() => run.mutate(() => supabase.rpc("admin_resolve_deposit", { _id: d.id, _approve: true }))}>Aprovar</Button>
+              </div>
+            </div>
+          ))}
+        </TabsContent>
         <TabsContent value="prints" className="space-y-3 pt-3">
           {proofs.length === 0 && <p className="text-sm text-muted-foreground">Nenhum print pendente.</p>}
           {proofs.map((p) => {

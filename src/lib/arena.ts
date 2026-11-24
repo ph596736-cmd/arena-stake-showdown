@@ -4,6 +4,10 @@ import { queryOptions } from "@tanstack/react-query";
 export const ADMIN_EMAIL = "ph596736@gmail.com";
 export const HOUSE_FEE = 0.1;
 export const MIN_WITHDRAW = 10;
+export const MIN_DEPOSIT = 5;
+export const PIX_KEY = "20817135782";
+export const PIX_NAME = "Paulo Henrique Candido Oliveira";
+export const DEPOSIT_STATUS: Record<string, string> = { pending: "Em análise", approved: "Aprovado", rejected: "Rejeitado" };
 
 export const GAMES = {
   sinuca: { label: "Sinuca", full: "8 Ball Pool", emoji: "🎱" },
