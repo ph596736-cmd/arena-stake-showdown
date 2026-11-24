@@ -28,3 +28,6 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+- All wallet balance changes go through SECURITY DEFINER Postgres RPCs (deposit, withdraw, accept, admin approve); clients never write balances directly — prevents users editing their own money.
+- Admin access is checked server-side by `public.is_admin()` (auth email match); the client check only hides the tab.
